@@ -3,58 +3,509 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Immersive Gallery</title>
+  <title>Immersive Gallery — Maria Cabral</title>
+  <meta name="description" content="Immersive Gallery by Maria Cabral. A curated collection of contemporary paintings exploring light, space, and sensory experience." />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Immersive Gallery — Maria Cabral" />
+  <meta property="og:description" content="A curated collection of contemporary paintings exploring light, space, and sensory experience." />
+  <meta property="og:image" content="art/20260318_134313.jpg" />
+  <meta property="og:url" content="https://markathoning-dev.github.io/" />
+
+  <!-- Preconnect to font server -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Arial, sans-serif; background: #1a1a1a; color: #fff; min-height: 100vh; }
-    .header { background: #000; padding: 2rem; text-align: center; }
-    .header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
-    .header p { color: #888; }
-    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; padding: 2rem; max-width: 1400px; margin: 0 auto; }
-    .painting-card { background: #2a2a2a; border-radius: 12px; overflow: hidden; transition: transform 0.3s ease; }
-    .painting-card:hover { transform: translateY(-5px); }
-    .painting-image { width: 100%; height: 250px; overflow: hidden; }
-    .painting-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
-    .painting-card:hover .painting-image img { transform: scale(1.1); }
-    .painting-info { padding: 1.5rem; }
-    .painting-title { font-size: 1.2rem; margin-bottom: 0.5rem; }
-    .painting-period { color: #888; font-size: 0.9rem; }
-    .footer { text-align: center; padding: 2rem; color: #666; }
+    /* ═══════════════════════════════════════
+       DESIGN TOKENS
+       ═══════════════════════════════════════ */
+    :root {
+      --color-bg: #11100e;
+      --color-surface: #1a1917;
+      --color-text: #f0ece4;
+      --color-text-muted: #8a857d;
+      --color-accent: #c8a87c;
+      --color-border: rgba(255,255,255,0.06);
+      --font-display: 'EB Garamond', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+    }
+
+    /* ═══════════════════════════════════════
+       BASE RESET
+       ═══════════════════════════════════════ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      min-height: 100vh;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    /* ─── Film grain overlay ─── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.03;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 200px 200px;
+    }
+
+    /* ═══════════════════════════════════════
+       HEADER
+       ═══════════════════════════════════════ */
+    header {
+      padding: 4rem 2rem 3rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s ease forwards;
+      animation-delay: 0.1s;
+    }
+
+    .gallery-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+      text-indent: 0.02em;
+    }
+
+    .gallery-year {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    .artist-line {
+      display: block;
+      margin-top: 1.25rem;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: var(--color-text-muted);
+    }
+
+    .artist-line a {
+      color: var(--color-text);
+      text-decoration: none;
+      border-bottom: 1px solid var(--color-border);
+      transition: border-color 0.3s ease, color 0.3s ease;
+    }
+
+    .artist-line a:hover {
+      color: var(--color-accent);
+      border-color: var(--color-accent);
+    }
+
+    /* Divider line */
+    header::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--color-accent);
+      margin: 2rem auto 0;
+      opacity: 0.5;
+    }
+
+    /* ═══════════════════════════════════════
+       GALLERY
+       ═══════════════════════════════════════ */
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3rem;
+      padding: 2rem clamp(1.5rem, 5vw, 4rem);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* ═══════════════════════════════════════
+       CARD
+       ═══════════════════════════════════════ */
+    .painting-card {
+      flex: 0 1 calc(50% - 1.5rem);
+      max-width: calc(50% - 1.5rem);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .painting-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .painting-wrapper {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    /* Ambient glow behind card */
+    .painting-card::before {
+      content: '';
+      position: absolute;
+      top: -2px; left: -2px; right: -2px; bottom: -2px;
+      background: radial-gradient(ellipse at center, rgba(200,168,124,0.08), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      z-index: -1;
+      border-radius: inherit;
+    }
+
+    .painting-card:hover::before {
+      opacity: 1;
+    }
+
+    .painting-image {
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
+      background-color: var(--color-surface);
+      position: relative;
+    }
+
+    .painting-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), filter 0.6s ease;
+      filter: brightness(0.92) saturate(0.95);
+    }
+
+    .painting-card:hover .painting-image img {
+      transform: scale(1.03);
+      filter: brightness(1) saturate(1);
+    }
+
+    /* Subtle image frame shadow */
+    .painting-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+      pointer-events: none;
+    }
+
+    .painting-info {
+      padding: 1.25rem 0.25rem;
+    }
+
+    .painting-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 400;
+      line-height: 1.4;
+      margin-bottom: 0.3rem;
+    }
+
+    .painting-date {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    /* ═══════════════════════════════════════
+       LIGHTBOX
+       ═══════════════════════════════════════ */
+    .lightbox-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      cursor: zoom-out;
+    }
+
+    .lightbox-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lightbox-overlay img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      box-shadow: 0 20px 80px rgba(0,0,0,0.6);
+      transform: scale(0.92);
+      transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .lightbox-overlay.active img {
+      transform: scale(1);
+    }
+
+    .lightbox-close {
+      position: fixed;
+      top: 2rem;
+      right: 2rem;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.3s ease;
+      z-index: 1001;
+    }
+
+    .lightbox-close:hover { opacity: 1; }
+
+    .lightbox-close::before,
+    .lightbox-close::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 1px;
+      background: white;
+    }
+    .lightbox-close::before { transform: rotate(45deg); }
+    .lightbox-close::after { transform: rotate(-45deg); }
+
+    .lightbox-caption {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 1001;
+    }
+
+    .lightbox-caption .lb-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .lightbox-caption .lb-date {
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    /* ═══════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════ */
+    footer {
+      text-align: center;
+      padding: 4rem 2rem;
+      margin-top: 2rem;
+      opacity: 0;
+      transform: translateY(15px);
+      animation: fadeUp 0.8s ease forwards;
+      animation-delay: 0.5s;
+    }
+
+    footer p {
+      font-size: 0.75rem;
+      font-weight: 300;
+      color: var(--color-text-muted);
+      letter-spacing: 0.08em;
+      line-height: 2;
+    }
+
+    footer a {
+      color: var(--color-text-muted);
+      text-decoration: none;
+      border-bottom: 1px solid var(--color-border);
+      transition: color 0.3s ease, border-color 0.3s ease;
+    }
+
+    footer a:hover {
+      color: var(--color-accent);
+      border-color: var(--color-accent);
+    }
+
+    footer hr {
+      border: none;
+      width: 40px;
+      height: 1px;
+      background: var(--color-border);
+      margin: 1rem auto;
+    }
+
+    /* ═══════════════════════════════════════
+       ANIMATIONS
+       ═══════════════════════════════════════ */
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ═══════════════════════════════════════
+       RESPONSIVE
+       ═══════════════════════════════════════ */
+    @media (max-width: 768px) {
+      header { padding: 3rem 1.5rem 2rem; }
+      .gallery {
+        gap: 2rem;
+        padding: 1.5rem 1rem;
+      }
+      .painting-card {
+        flex: 0 1 100%;
+        max-width: 100%;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .painting-card {
+        flex: 0 1 calc(50% - 1.5rem);
+        max-width: calc(50% - 1.5rem);
+      }
+    }
+
+    @media (min-width: 1400px) {
+      .gallery {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3.5rem 4rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="header">
-    <h1>Immersive Gallery</h1>
-    <p>2026</p>
-    <p style="color: #666; margin-top: 0.5rem; font-size: 0.9rem;">by <a href="https://instagram.com/maria_cabral_painter" target="_blank" style="color: #666; text-decoration: none;">Maria Cabral</a> <a href="https://instagram.com/maria_cabral_painter" target="_blank" style="color: #666; text-decoration: none;">@maria_cabral_painter</a></p>
-  </div>
+
+  <header>
+    <h1 class="gallery-title">Immersive Gallery</h1>
+    <p class="gallery-year">2026</p>
+    <span class="artist-line">
+      by <a href="https://instagram.com/maria_cabral_painter" target="_blank" rel="noopener noreferrer">Maria Cabral</a> · <a href="https://instagram.com/maria_cabral_painter" target="_blank" rel="noopener noreferrer">@maria_cabral_painter</a>
+    </span>
+  </header>
+
   <div class="gallery" data-photos></div>
-  <div class="footer">
-    <p>&copy; 2026 Immersive Gallery</p>
+
+  <footer>
+    <hr />
+    <p>Maria Cabral — Contemporary Painter &amp; Immersive Artist</p>
+    <p><a href="https://instagram.com/maria_cabral_painter" target="_blank" rel="noopener noreferrer">Instagram</a> &nbsp;/&nbsp; <a href="mailto:mariacabral.painter@gmail.com">Contact</a></p>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="lightbox-overlay" id="lightbox">
+    <span class="lightbox-close" id="lightboxClose"></span>
+    <img src="" alt="" id="lightboxImg" />
+    <div class="lightbox-caption">
+      <p class="lb-title" id="lightboxTitle"></p>
+      <p class="lb-date" id="lightboxDate"></p>
+    </div>
   </div>
+
   <script>
     const photos = [
-      { date: '2026-03-18', title: 'March 18', src: 'art/20260318_134313.jpg' },
+      { date: '2026-03-18', title: 'March 18',  src: 'art/20260318_134313.jpg' },
       { date: '2026-02-23', title: 'February 23', src: 'art/20260223_204805.jpg' },
-      { date: '2026-02-08', title: 'February 8', src: 'art/20260208_150607.jpg' },
-      { date: '2026-01-15', title: 'January 15', src: 'art/20260115_005907.jpg' }
+      { date: '2026-02-08', title: 'February 8',  src: 'art/20260208_150607.jpg' },
+      { date: '2026-01-15', title: 'January 15',  src: 'art/20260115_005907.jpg' }
     ];
 
+    // Build gallery cards
     const gallery = document.querySelector('[data-photos]');
-    photos.forEach(photo => {
+    photos.forEach((photo, i) => {
       const card = document.createElement('div');
       card.className = 'painting-card';
+      card.style.transitionDelay = `${0.15 + i * 0.1}s`;
       card.innerHTML = `
-        <div class="painting-image">
-          <img src="${photo.src}" alt="${photo.title}" loading="lazy" />
+        <div class="painting-wrapper" data-lightbox="${i}">
+          <div class="painting-image">
+            <img src="${photo.src}" alt="${photo.title}" loading="lazy" />
+          </div>
         </div>
         <div class="painting-info">
-          <h3 class="painting-title">${photo.title}</h3>
-          <span class="painting-period">${photo.date}</span>
+          <h2 class="painting-title">${photo.title}</h2>
+          <span class="painting-date">${photo.date}</span>
         </div>
       `;
       gallery.appendChild(card);
     });
+
+    // Scroll-triggered reveals via Intersection Observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.painting-card').forEach(card => observer.observe(card));
+
+    // Lightbox
+    const lightbox   = document.getElementById('lightbox');
+    const lbImg      = document.getElementById('lightboxImg');
+    const lbTitle    = document.getElementById('lightboxTitle');
+    const lbDate     = document.getElementById('lightboxDate');
+    const lbClose    = document.getElementById('lightboxClose');
+
+    gallery.addEventListener('click', (e) => {
+      const wrapper = e.target.closest('[data-lightbox]');
+      if (!wrapper) return;
+      const idx = parseInt(wrapper.dataset.lightbox);
+      const photo = photos[idx];
+      lbImg.src = photo.src;
+      lbImg.alt = photo.title;
+      lbTitle.textContent = photo.title;
+      lbDate.textContent = photo.date;
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    lbClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
   </script>
 </body>
 </html>
