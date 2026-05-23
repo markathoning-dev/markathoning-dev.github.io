@@ -13,7 +13,9 @@
     .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; padding: 2rem; max-width: 1400px; margin: 0 auto; }
     .painting-card { background: #2a2a2a; border-radius: 12px; overflow: hidden; transition: transform 0.3s ease; }
     .painting-card:hover { transform: translateY(-5px); }
-    .painting-image { width: 100%; height: 250px; background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%); display: flex; align-items: center; justify-content: center; color: #555; font-size: 3rem; }
+    .painting-image { width: 100%; height: 250px; overflow: hidden; }
+    .painting-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+    .painting-card:hover .painting-image img { transform: scale(1.1); }
     .painting-info { padding: 1.5rem; }
     .painting-title { font-size: 1.2rem; margin-bottom: 0.5rem; }
     .painting-period { color: #888; font-size: 0.9rem; }
@@ -23,34 +25,31 @@
 <body>
   <div class="header">
     <h1>Immersive Gallery</h1>
-    <p>A Collection of Digital Artworks</p>
+    <p>A Collection of Personal Photos</p>
   </div>
-  <div class="gallery" data-paintings></div>
+  <div class="gallery" data-photos></div>
   <div class="footer">
-    <p>&copy; 2026 Immersive Gallery (Updated)</p>
+    <p>&copy; 2026 Immersive Gallery</p>
   </div>
   <script>
-    const paintings = [
-      { period: 'Early Works', title: 'Study in Blue', color: '#4a4a8a' },
-      { period: 'Early Works', title: 'The Beginning', color: '#5a6a4a' },
-      { period: '2023-2024', title: 'Urban Dusk', color: '#5a4a4a' },
-      { period: '2023-2024', title: 'Fractured Light', color: '#4a5a7a' },
-      { period: '2023-2024', title: 'Quiet Room', color: '#6a5a4a' },
-      { period: '2025', title: 'Horizon Scan', color: '#4a7a6a' },
-      { period: '2025', title: 'Still Motion', color: '#7a5a6a' }
+    const photos = [
+      { date: '2026-03-18', title: 'March 18', src: 'art/20260318_134313.jpg' },
+      { date: '2026-02-23', title: 'February 23', src: 'art/20260223_204805.jpg' },
+      { date: '2026-02-08', title: 'February 8', src: 'art/20260208_150607.jpg' },
+      { date: '2026-01-15', title: 'January 15', src: 'art/20260115_005907.jpg' }
     ];
 
-    const gallery = document.querySelector('[data-paintings]');
-    paintings.forEach((p, index) => {
+    const gallery = document.querySelector('[data-photos]');
+    photos.forEach(photo => {
       const card = document.createElement('div');
       card.className = 'painting-card';
       card.innerHTML = `
-        <div class="painting-image" style="background: ${p.color}">
-          <span>🎨</span>
+        <div class="painting-image">
+          <img src="${photo.src}" alt="${photo.title}" loading="lazy" />
         </div>
         <div class="painting-info">
-          <h3 class="painting-title">${p.title}</h3>
-          <span class="painting-period">${p.period}</span>
+          <h3 class="painting-title">${photo.title}</h3>
+          <span class="painting-period">${photo.date}</span>
         </div>
       `;
       gallery.appendChild(card);
