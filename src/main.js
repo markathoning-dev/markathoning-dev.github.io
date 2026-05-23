@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js'
 import { AppState, VIEWS } from './state/AppState.js'
 import { Door } from './scene/Door.js'
 import { Gallery } from './scene/Gallery.js'
