@@ -133,6 +133,108 @@
     }
 
     /* ═══════════════════════════════════════
+       TAB BAR
+       ═══════════════════════════════════════ */
+    .tab-bar {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin: 0 auto;
+      padding: 0 2rem;
+      max-width: 1400px;
+      opacity: 0;
+      transform: translateY(15px);
+      animation: fadeUp 0.6s ease forwards;
+      animation-delay: 0.25s;
+    }
+
+    .tab-btn {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      background: none;
+      border: none;
+      padding: 0.85rem 2rem;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.3s ease;
+      outline: none;
+    }
+
+    .tab-btn::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 1px;
+      background: var(--color-accent);
+      transition: width 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .tab-btn:hover {
+      color: var(--color-text);
+    }
+
+    .tab-btn.active {
+      color: var(--color-accent);
+    }
+
+    .tab-btn.active::after {
+      width: 60%;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3rem;
+      padding: 2rem clamp(1.5rem, 5vw, 4rem);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* In-progress specific: smaller, denser, with WIP badge */
+    .tab-content.wip .painting-card {
+      flex: 0 1 calc(33.33% - 2rem);
+      max-width: calc(33.33% - 2rem);
+    }
+
+    .wip-badge {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      font-family: var(--font-body);
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      background: rgba(17, 16, 14, 0.7);
+      backdrop-filter: blur(4px);
+      padding: 0.25rem 0.6rem;
+      border-radius: 2px;
+      border: 1px solid rgba(200, 168, 124, 0.2);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .painting-image.wip-frame::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 0 1px rgba(200, 168, 124, 0.12);
+      pointer-events: none;
+    }
+
+    /* ═══════════════════════════════════════
        GALLERY
        ═══════════════════════════════════════ */
     .gallery {
@@ -377,13 +479,17 @@
        ═══════════════════════════════════════ */
     @media (max-width: 768px) {
       header { padding: 3rem 1.5rem 2rem; }
-      .gallery {
+      .tab-content.active {
         gap: 2rem;
         padding: 1.5rem 1rem;
       }
       .painting-card {
         flex: 0 1 100%;
         max-width: 100%;
+      }
+      .tab-content.wip .painting-card {
+        flex: 0 1 calc(50% - 1rem);
+        max-width: calc(50% - 1rem);
       }
     }
 
@@ -392,13 +498,27 @@
         flex: 0 1 calc(50% - 1.5rem);
         max-width: calc(50% - 1.5rem);
       }
+      .tab-content.wip .painting-card {
+        flex: 0 1 calc(50% - 1.5rem);
+        max-width: calc(50% - 1.5rem);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .tab-content.wip .painting-card {
+        flex: 0 1 100%;
+        max-width: 100%;
+      }
     }
 
     @media (min-width: 1400px) {
-      .gallery {
+      .tab-content.active {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 3.5rem 4rem;
+      }
+      .tab-content.wip.active {
+        grid-template-columns: 1fr 1fr 1fr;
       }
     }
 
@@ -420,7 +540,16 @@
     </span>
   </header>
 
-  <div class="gallery" data-photos></div>
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="gallery">Gallery</button>
+    <button class="tab-btn" data-tab="in-progress">In Progress</button>
+  </div>
+
+  <div id="tab-gallery" class="tab-content active">
+    <div class="gallery" data-photos></div>
+  </div>
+
+  <div id="tab-in-progress" class="tab-content wip" data-wip></div>
 
   <footer>
     <hr />
@@ -438,7 +567,7 @@
     </div>
   </div>
 
-  <script>
+<script>
     const photos = [
       { date: '2026-03-18', title: 'March 18',  src: 'art/20260318_134313.jpg' },
       { date: '2026-02-23', title: 'February 23', src: 'art/20260223_204805.jpg' },
@@ -446,27 +575,58 @@
       { date: '2026-01-15', title: 'January 15',  src: 'art/20260115_005907.jpg' }
     ];
 
-    // Build gallery cards
-    const gallery = document.querySelector('[data-photos]');
-    photos.forEach((photo, i) => {
-      const card = document.createElement('div');
-      card.className = 'painting-card';
-      card.style.transitionDelay = `${0.15 + i * 0.1}s`;
-      card.innerHTML = `
-        <div class="painting-wrapper" data-lightbox="${i}">
-          <div class="painting-image">
-            <img src="${photo.src}" alt="${photo.title}" loading="lazy" />
+    const wipPhotos = [
+      { src: 'art/in-progress/8e57ddc409cb1727da04e86984b6cc12.jpg' },
+      { src: 'art/in-progress/42a777c83d41ae1fabe03ae1f59976e1.jpg' },
+      { src: 'art/in-progress/1df7b2853a7435c8d19736418a452118.jpg' },
+      { src: 'art/in-progress/7149a42d6493465c388f16b9e9fa01b1.jpg' },
+      { src: 'art/in-progress/ff747b27aac7ff247100927cffd5576c.jpg' },
+      { src: 'art/in-progress/796a7fca823c2cb67cd0179ad3f85557.jpg' }
+    ];
+
+    // ─── Build gallery cards ───
+    function buildGallery(container, items, isWip) {
+      items.forEach((item, i) => {
+        const card = document.createElement('div');
+        card.className = 'painting-card';
+        card.style.transitionDelay = `${0.15 + i * 0.1}s`;
+        card.innerHTML = `
+          <div class="painting-wrapper" data-lightbox="${isWip ? 'wip-' + i : i}">
+            <div class="painting-image${isWip ? ' wip-frame' : ''}">
+              ${isWip ? '<span class="wip-badge">WIP</span>' : ''}
+              <img src="${item.src}" alt="${item.title || 'Work in progress'}" loading="lazy" />
+            </div>
           </div>
-        </div>
-        <div class="painting-info">
-          <h2 class="painting-title">${photo.title}</h2>
-          <span class="painting-date">${photo.date}</span>
-        </div>
-      `;
-      gallery.appendChild(card);
+          ${item.title ? `<div class="painting-info">
+            <h2 class="painting-title">${item.title}</h2>
+            <span class="painting-date">${item.date}</span>
+          </div>` : ''}
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    const gallery = document.querySelector('[data-photos]');
+    buildGallery(gallery, photos, false);
+
+    const wipContainer = document.querySelector('[data-wip]');
+    buildGallery(wipContainer, wipPhotos, true);
+
+    // ─── Tab switching ───
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+        document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+        // Re-observe new cards for scroll reveal
+        observer.disconnect();
+        document.querySelectorAll('.tab-content.active .painting-card').forEach(card => observer.observe(card));
+      });
     });
 
-    // Scroll-triggered reveals via Intersection Observer
+    // ─── Scroll-triggered reveals via Intersection Observer ───
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -478,7 +638,7 @@
 
     document.querySelectorAll('.painting-card').forEach(card => observer.observe(card));
 
-    // Lightbox
+    // ─── Lightbox ───
     const lightbox   = document.getElementById('lightbox');
     const lbImg      = document.getElementById('lightboxImg');
     const lbTitle    = document.getElementById('lightboxTitle');
@@ -488,12 +648,26 @@
     gallery.addEventListener('click', (e) => {
       const wrapper = e.target.closest('[data-lightbox]');
       if (!wrapper) return;
-      const idx = parseInt(wrapper.dataset.lightbox);
-      const photo = photos[idx];
+      const idx = wrapper.dataset.lightbox;
+      const isWip = idx.startsWith('wip-');
+      const photo = isWip ? wipPhotos[parseInt(idx.slice(4))] : photos[parseInt(idx)];
       lbImg.src = photo.src;
-      lbImg.alt = photo.title;
-      lbTitle.textContent = photo.title;
-      lbDate.textContent = photo.date;
+      lbImg.alt = photo.title || 'Work in progress';
+      lbTitle.textContent = photo.title || 'Untitled';
+      lbDate.textContent = photo.date || 'In progress';
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+
+    wipContainer.addEventListener('click', (e) => {
+      const wrapper = e.target.closest('[data-lightbox]');
+      if (!wrapper) return;
+      const idx = parseInt(wrapper.dataset.lightbox.slice(4));
+      const photo = wipPhotos[idx];
+      lbImg.src = photo.src;
+      lbImg.alt = 'Work in progress';
+      lbTitle.textContent = 'Untitled';
+      lbDate.textContent = 'In progress';
       lightbox.classList.add('active');
       document.body.style.overflow = 'hidden';
     });
