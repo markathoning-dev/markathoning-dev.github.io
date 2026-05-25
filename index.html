@@ -846,10 +846,10 @@
     loadNewsFeed().then(data => renderNewsFeed(data));
 
     // ─── Visitor counter ───
-    fetch('https://api.countapi.xyz/hit/mariacabralgallery.com/visitors')
+    fetch('https://api.counterapi.dev/v1/mariacabralgallery.com/visitors/up')
       .then(r => r.json())
       .then(data => {
-        document.getElementById('visitorCount').textContent = data.value.toLocaleString();
+        document.getElementById('visitorCount').textContent = data.count.toLocaleString();
       })
       .catch(() => {
         document.getElementById('visitorCount').textContent = '—';
