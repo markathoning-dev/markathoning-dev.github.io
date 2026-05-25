@@ -617,6 +617,20 @@
         transition-duration: 0.01ms !important;
       }
     }
+
+    /* ─── Visitor counter ─── */
+    .visitor-counter {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 300;
+      color: var(--color-text-muted);
+      letter-spacing: 0.02em;
+    }
+    .visitor-counter .count {
+      color: var(--color-accent);
+      font-variant-numeric: tabular-nums;
+    }
   </style>
 </head>
 <body>
@@ -678,6 +692,7 @@
     <hr />
     <p>Maria Cabral — Contemporary Painter &amp; Immersive Artist</p>
     <p><a href="https://instagram.com/maria_cabral_painter" target="_blank" rel="noopener noreferrer">Instagram</a> &nbsp;/&nbsp; <a href="mailto:mariacabral.painter@gmail.com">Contact</a></p>
+    <p class="visitor-counter"><span class="count" id="visitorCount">—</span> visits</p>
   </footer>
 
   <!-- Lightbox -->
@@ -829,6 +844,16 @@
     }
 
     loadNewsFeed().then(data => renderNewsFeed(data));
+
+    // ─── Visitor counter ───
+    fetch('https://api.countapi.xyz/hit/mariacabralgallery.com/visitors')
+      .then(r => r.json())
+      .then(data => {
+        document.getElementById('visitorCount').textContent = data.value.toLocaleString();
+      })
+      .catch(() => {
+        document.getElementById('visitorCount').textContent = '—';
+      });
   </script>
 </body>
 </html>
