@@ -808,7 +808,7 @@
     const DEFAULT_FEED = {
       events:  'Solo exhibition — spring 2026',
       activities: 'Studio residence, Lisbon',
-      works:  'New series: "Chromatic Fields"',
+      works:  '',
       releases: 'Limited edition prints available'
     };
 
@@ -824,7 +824,7 @@
       document.querySelectorAll('.news-feed__item').forEach(item => {
         const key = item.dataset.feed;
         const textEl = item.querySelector('.news-feed__text');
-        if (textEl && data[key]) textEl.textContent = data[key];
+        if (textEl && data[key] !== undefined) textEl.textContent = data[key] || '—';
       });
     }
 
