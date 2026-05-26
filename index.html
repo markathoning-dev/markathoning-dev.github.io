@@ -75,10 +75,7 @@
       max-width: 1400px;
       margin: 0 auto;
       text-align: center;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.8s ease forwards;
-      animation-delay: 0.1s;
+      animation: fadeUp 0.8s ease 0.1s forwards;
     }
 
     .gallery-title {
@@ -142,10 +139,7 @@
       margin: 0 auto;
       padding: 0 2rem;
       max-width: 1400px;
-      opacity: 0;
-      transform: translateY(15px);
-      animation: fadeUp 0.6s ease forwards;
-      animation-delay: 0.25s;
+      animation: fadeUp 0.6s ease 0.25s forwards;
     }
 
     .tab-btn {
@@ -438,10 +432,7 @@
       text-align: center;
       padding: 4rem 2rem;
       margin-top: 2rem;
-      opacity: 0;
-      transform: translateY(15px);
-      animation: fadeUp 0.8s ease forwards;
-      animation-delay: 0.5s;
+      animation: fadeUp 0.8s ease 0.5s forwards;
     }
 
     footer p {
@@ -476,6 +467,10 @@
        ANIMATIONS
        ═══════════════════════════════════════ */
     @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
       to {
         opacity: 1;
         transform: translateY(0);
@@ -537,10 +532,7 @@
       max-width: 820px;
       margin: 0 auto;
       padding: 0 2rem 0.5rem;
-      opacity: 0;
-      transform: translateY(15px);
-      animation: fadeUp 0.6s ease forwards;
-      animation-delay: 0.18s;
+      animation: fadeUp 0.6s ease 0.18s forwards;
     }
 
     .news-feed__inner {
