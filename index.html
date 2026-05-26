@@ -308,6 +308,16 @@
       color: var(--color-text-muted);
     }
 
+    .painting-material,
+    .painting-dimensions {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 300;
+      color: var(--color-text-muted);
+      margin-top: 0.2rem;
+    }
+
     /* ═══════════════════════════════════════
        LIGHTBOX
        ═══════════════════════════════════════ */
@@ -394,6 +404,15 @@
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--color-text-muted);
+    }
+
+    .lightbox-caption .lb-material,
+    .lightbox-caption .lb-dims {
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 300;
+      color: var(--color-text-muted);
+      margin-top: 0.15rem;
     }
 
     /* ═══════════════════════════════════════
@@ -675,12 +694,14 @@
     <div class="lightbox-caption">
       <p class="lb-title" id="lightboxTitle"></p>
       <p class="lb-date" id="lightboxDate"></p>
+      <p class="lb-material" id="lightboxMaterial"></p>
+      <p class="lb-dims" id="lightboxDims"></p>
     </div>
   </div>
 
 <script>
     const photos = [
-      { date: '2026-03-18', title: 'March 18',  src: 'art/20260318_134313.jpg' },
+      { date: '2026-03-18', title: 'Pink Veil', material: 'Acrylic on canvas', dimensions: '14 × 14 cm', src: 'art/20260318_134313.jpg' },
       { date: '2026-02-23', title: 'February 23', src: 'art/20260223_204805.jpg' },
       { date: '2026-02-08', title: 'February 8',  src: 'art/20260208_150607.jpg' },
       { date: '2026-01-15', title: 'January 15',  src: 'art/20260115_005907.jpg' }
@@ -710,6 +731,8 @@
           ${item.title ? `<div class="painting-info">
             <h2 class="painting-title">${item.title}</h2>
             <span class="painting-date">${item.date}</span>
+            ${item.material ? `<span class="painting-material">${item.material}</span>` : ''}
+            ${item.dimensions ? `<span class="painting-dimensions">${item.dimensions}</span>` : ''}
           </div>` : ''}
         `;
         container.appendChild(card);
@@ -754,6 +777,8 @@
     const lbTitle    = document.getElementById('lightboxTitle');
     const lbDate     = document.getElementById('lightboxDate');
     const lbClose    = document.getElementById('lightboxClose');
+    const lbMaterial = document.getElementById('lightboxMaterial');
+    const lbDims    = document.getElementById('lightboxDims');
 
     gallery.addEventListener('click', (e) => {
       const wrapper = e.target.closest('[data-lightbox]');
@@ -765,6 +790,8 @@
       lbImg.alt = photo.title || 'Work in progress';
       lbTitle.textContent = photo.title || 'Untitled';
       lbDate.textContent = photo.date || 'In progress';
+      lbMaterial.textContent = photo.material || '';
+      lbDims.textContent = photo.dimensions || '';
       lightbox.classList.add('active');
       document.body.style.overflow = 'hidden';
     });
@@ -778,6 +805,8 @@
       lbImg.alt = 'Work in progress';
       lbTitle.textContent = 'Untitled';
       lbDate.textContent = 'In progress';
+      lbMaterial.textContent = '';
+      lbDims.textContent = '';
       lightbox.classList.add('active');
       document.body.style.overflow = 'hidden';
     });
