@@ -261,6 +261,25 @@
       position: relative;
     }
 
+    /* Fallback for browsers without aspect-ratio support */
+    @supports not (aspect-ratio: 1/1) {
+      .painting-image {
+        height: auto;
+      }
+      .painting-image::before {
+        content: '';
+        display: block;
+        padding-bottom: 133.33%;
+      }
+      .painting-image img {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
     .painting-image img {
       width: 100%;
       height: 100%;
