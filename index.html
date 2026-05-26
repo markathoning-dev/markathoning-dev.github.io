@@ -225,9 +225,6 @@
     .painting-card {
       flex: 0 1 calc(50% - 1.5rem);
       max-width: calc(50% - 1.5rem);
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
     }
 
     .painting-card.visible {
@@ -721,7 +718,6 @@
       items.forEach((item, i) => {
         const card = document.createElement('div');
         card.className = 'painting-card';
-        card.style.transitionDelay = `${0.15 + i * 0.1}s`;
         card.innerHTML = `
           <div class="painting-wrapper" data-lightbox="${isWip ? 'wip-' + i : i}">
 <div class="painting-image">
@@ -753,23 +749,9 @@
         btn.classList.add('active');
         document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
         document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
-        // Re-observe new cards for scroll reveal
-        observer.disconnect();
-        document.querySelectorAll('.tab-content.active .painting-card').forEach(card => observer.observe(card));
+
       });
     });
-
-    // ─── Scroll-triggered reveals via Intersection Observer ───
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.15 });
-
-    document.querySelectorAll('.painting-card').forEach(card => observer.observe(card));
 
     // ─── Lightbox ───
     const lightbox   = document.getElementById('lightbox');
