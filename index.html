@@ -601,6 +601,264 @@
       .news-feed__inner { grid-template-columns: 1fr; }
     }
 
+    /* ═══════════════════════════════════════
+       COMMISSION BUTTON
+       ═══════════════════════════════════════ */
+    .commission-btn {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      z-index: 500;
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: #11100e;
+      background: linear-gradient(135deg, #e8c97a, #d4a854);
+      border: none;
+      padding: 0.7rem 1.5rem;
+      border-radius: 40px;
+      cursor: pointer;
+      box-shadow: 0 2px 20px rgba(212, 168, 84, 0.35);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      animation: commissionPulse 2.5s ease-in-out infinite;
+    }
+
+    .commission-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 30px rgba(212, 168, 84, 0.55);
+      animation: none;
+    }
+
+    .commission-btn .sparkle {
+      display: inline-block;
+      margin-right: 0.3rem;
+      animation: sparkleSpin 3s linear infinite;
+    }
+
+    @keyframes commissionPulse {
+      0%, 100% { box-shadow: 0 2px 20px rgba(212, 168, 84, 0.35); }
+      50% { box-shadow: 0 2px 30px rgba(212, 168, 84, 0.7), 0 0 60px rgba(212, 168, 84, 0.15); }
+    }
+
+    @keyframes sparkleSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* ═══════════════════════════════════════
+       COMMISSION MODAL
+       ═══════════════════════════════════════ */
+    .commission-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+
+    .commission-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .commission-modal {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      padding: 2.5rem 2rem 2rem;
+      max-width: 520px;
+      width: 90vw;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      transform: translateY(20px);
+      transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .commission-overlay.active .commission-modal {
+      transform: translateY(0);
+    }
+
+    .commission-modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0.4;
+      transition: opacity 0.25s ease;
+      border: none;
+      background: none;
+      color: var(--color-text);
+      font-size: 1.3rem;
+    }
+
+    .commission-modal-close:hover { opacity: 1; }
+
+    .commission-modal h2 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 0.3rem;
+      color: var(--color-accent);
+    }
+
+    .commission-modal .modal-sub {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      margin-bottom: 1.8rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .form-group label .required {
+      color: var(--color-accent);
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: var(--color-text);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 0.65rem 0.9rem;
+      outline: none;
+      transition: border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: var(--color-accent);
+      background: rgba(200,168,124,0.06);
+    }
+
+    .form-textarea {
+      min-height: 100px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .form-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238a857d' d='M1.41 0L6 4.58 10.59 0 12 1.41l-6 6-6-6z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.9rem center;
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-submit {
+      width: 100%;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: #11100e;
+      background: linear-gradient(135deg, #e8c97a, #d4a854);
+      border: none;
+      padding: 0.85rem 1.5rem;
+      border-radius: 40px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .form-submit:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 20px rgba(212, 168, 84, 0.35);
+    }
+
+    .form-submit:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ─── Commission Toast ─── */
+    .commission-toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      z-index: 3000;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--color-text);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 1rem 1.8rem;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .commission-toast.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
+    }
+
+    .commission-toast.error {
+      border-color: rgba(220, 80, 80, 0.4);
+      color: #e88;
+    }
+
+    @media (max-width: 480px) {
+      .commission-btn {
+        top: 1rem;
+        right: 1rem;
+        padding: 0.6rem 1.1rem;
+        font-size: 0.72rem;
+      }
+      .commission-modal {
+        padding: 2rem 1.5rem 1.5rem;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -781,6 +1039,85 @@
     </div>
   </noscript>
 
+  <!-- ═══ COMMISSION BUTTON ═══ -->
+  <button class="commission-btn" id="commissionBtn" aria-label="Request a commission">
+    <span class="sparkle">✦</span> Request a Commission
+  </button>
+
+  <!-- ═══ COMMISSION MODAL ═══ -->
+  <div class="commission-overlay" id="commissionOverlay">
+    <div class="commission-modal" role="dialog" aria-label="Commission request form">
+      <button class="commission-modal-close" id="commissionClose" aria-label="Close">&times;</button>
+      <h2>Request a Commission</h2>
+      <p class="modal-sub">Tell me what you have in mind and I'll get back to you.</p>
+
+      <form id="commissionForm" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="commName">Name <span class="required">*</span></label>
+            <input type="text" class="form-input" id="commName" name="name" required />
+          </div>
+          <div class="form-group">
+            <label for="commEmail">Email <span class="required">*</span></label>
+            <input type="email" class="form-input" id="commEmail" name="email" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="commType">Commission Type</label>
+          <select class="form-select" id="commType" name="type">
+            <option value="">Select...</option>
+            <option value="Original painting">Original painting</option>
+            <option value="Custom commission">Custom commission</option>
+            <option value="Print / reproduction">Print / reproduction</option>
+            <option value="Collaboration">Collaboration</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="commDescription">Description <span class="required">*</span></label>
+          <textarea class="form-textarea" id="commDescription" name="description" required placeholder="Describe what you're looking for — subject, style, size, colours, mood..."></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="commBudget">Budget Range</label>
+            <select class="form-select" id="commBudget" name="budget">
+              <option value="">Select...</option>
+              <option value="Under €200">Under €200</option>
+              <option value="€200 – €500">€200 – €500</option>
+              <option value="€500 – €1,000">€500 – €1,000</option>
+              <option value="€1,000 – €3,000">€1,000 – €3,000</option>
+              <option value="€3,000+">€3,000+</option>
+              <option value="Not sure">Not sure / Prefer to discuss</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="commTimeline">Timeline</label>
+            <select class="form-select" id="commTimeline" name="timeline">
+              <option value="">Select...</option>
+              <option value="ASAP">As soon as possible</option>
+              <option value="1-2 months">1 – 2 months</option>
+              <option value="3-6 months">3 – 6 months</option>
+              <option value="No rush">No rush / open-ended</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="commReference">Reference / Links</label>
+          <input type="text" class="form-input" id="commReference" name="reference" placeholder="Instagram, Pinterest, website links, or image URLs" />
+        </div>
+
+        <button type="submit" class="form-submit" id="commSubmit">Send Request</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══ COMMISSION TOAST ═══ -->
+  <div class="commission-toast" id="commissionToast"></div>
+
   <footer>
     <hr />
     <p>Maria Cabral — Contemporary Painter &amp; Immersive Artist</p>
@@ -941,6 +1278,91 @@
       .catch(() => {
         document.getElementById('visitorCount').textContent = '—';
       });
+
+    // ─── Commission Modal ───
+    const commBtn      = document.getElementById('commissionBtn');
+    const commOverlay  = document.getElementById('commissionOverlay');
+    const commClose    = document.getElementById('commissionClose');
+    const commForm     = document.getElementById('commissionForm');
+    const commSubmit   = document.getElementById('commSubmit');
+    const commToast    = document.getElementById('commissionToast');
+
+    let toastTimer;
+
+    function openCommissionModal() {
+      commOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCommissionModal() {
+      commOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function showToast(msg, isError) {
+      clearTimeout(toastTimer);
+      commToast.textContent = msg;
+      commToast.className = 'commission-toast' + (isError ? ' error' : '');
+      // tiny reflow for re-animation
+      void commToast.offsetWidth;
+      commToast.classList.add('visible');
+      toastTimer = setTimeout(() => commToast.classList.remove('visible'), 5000);
+    }
+
+    commBtn.addEventListener('click', openCommissionModal);
+
+    commClose.addEventListener('click', closeCommissionModal);
+
+    commOverlay.addEventListener('click', (e) => {
+      if (e.target === commOverlay) closeCommissionModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeCommissionModal();
+    });
+
+    commForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name        = document.getElementById('commName').value.trim();
+      const email       = document.getElementById('commEmail').value.trim();
+      const type        = document.getElementById('commType').value;
+      const description = document.getElementById('commDescription').value.trim();
+      const budget      = document.getElementById('commBudget').value;
+      const timeline    = document.getElementById('commTimeline').value;
+      const reference   = document.getElementById('commReference').value.trim();
+
+      if (!name || !email || !description) {
+        showToast('Please fill in all required fields.', true);
+        return;
+      }
+
+      commSubmit.disabled = true;
+      commSubmit.textContent = 'Sending...';
+
+      try {
+        const res = await fetch('/api/commission', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, type, description, budget, timeline, reference })
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.ok) {
+          showToast('Request sent! Maria will get back to you soon.');
+          closeCommissionModal();
+          commForm.reset();
+        } else {
+          showToast(data.error || 'Something went wrong. Please try again.', true);
+        }
+      } catch (err) {
+        showToast('Network error. Please check your connection and try again.', true);
+      } finally {
+        commSubmit.disabled = false;
+        commSubmit.textContent = 'Send Request';
+      }
+    });
   </script>
 </body>
 </html>
