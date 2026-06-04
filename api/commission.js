@@ -1,6 +1,6 @@
 // Vercel Serverless Function — Commission Request → Slack
 //
-// Expects a POST with JSON body: { name, email, type, description, budget, timeline, reference }
+// Expects a POST with JSON body: { name, email, type, description, supportType, reference }
 // Forwards to a Slack Incoming Webhook stored in SLACK_COMMISSION_WEBHOOK env var.
 //
 // To set up: create a Slack webhook at https://api.slack.com/messaging/webhooks
@@ -45,14 +45,8 @@ export default async function handler(req, res) {
     {
       type: 'section',
       fields: [
-        { type: 'mrkdwn', text: `*Type:*\n${body.type ? escapeMd(body.type) : 'Not specified'}` },
-        { type: 'mrkdwn', text: `*Budget:*\n${body.budget ? escapeMd(body.budget) : 'Not specified'}` }
-      ]
-    },
-    {
-      type: 'section',
-      fields: [
-        { type: 'mrkdwn', text: `*Timeline:*\n${body.timeline ? escapeMd(body.timeline) : 'Not specified'}` },
+        { type: 'mrkdwn', text: `*Support Type:*\n${body.supportType ? escapeMd(body.supportType) : 'Not specified'}` },
+        { type: 'mrkdwn', text: `*Type:*\n${body.type ? escapeMd(body.type) : 'Not specified'}` }
       ]
     },
     {

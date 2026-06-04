@@ -1067,9 +1067,9 @@
           <label for="commType">Commission Type</label>
           <select class="form-select" id="commType" name="type">
             <option value="">Select...</option>
-            <option value="Original painting">Original painting</option>
-            <option value="Custom commission">Custom commission</option>
-            <option value="Print / reproduction">Print / reproduction</option>
+            <option value="Oil painting">Oil painting</option>
+            <option value="Acrylic painting">Acrylic painting</option>
+            <option value="PLA painting">PLA painting</option>
             <option value="Collaboration">Collaboration</option>
             <option value="Other">Other</option>
           </select>
@@ -1080,29 +1080,14 @@
           <textarea class="form-textarea" id="commDescription" name="description" required placeholder="Describe what you're looking for — subject, style, size, colours, mood..."></textarea>
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label for="commBudget">Budget Range</label>
-            <select class="form-select" id="commBudget" name="budget">
-              <option value="">Select...</option>
-              <option value="Under €200">Under €200</option>
-              <option value="€200 – €500">€200 – €500</option>
-              <option value="€500 – €1,000">€500 – €1,000</option>
-              <option value="€1,000 – €3,000">€1,000 – €3,000</option>
-              <option value="€3,000+">€3,000+</option>
-              <option value="Not sure">Not sure / Prefer to discuss</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="commTimeline">Timeline</label>
-            <select class="form-select" id="commTimeline" name="timeline">
-              <option value="">Select...</option>
-              <option value="ASAP">As soon as possible</option>
-              <option value="1-2 months">1 – 2 months</option>
-              <option value="3-6 months">3 – 6 months</option>
-              <option value="No rush">No rush / open-ended</option>
-            </select>
-          </div>
+        <div class="form-group">
+          <label for="commSupport">Support Type</label>
+          <select class="form-select" id="commSupport" name="supportType">
+            <option value="">Select...</option>
+            <option value="Paper">Paper</option>
+            <option value="Canvas">Canvas</option>
+            <option value="Other">Other</option>
+          </select>
         </div>
 
         <div class="form-group">
@@ -1248,7 +1233,7 @@
       events:  'Collective exhibition — summer 2026',
       activities: 'Studio residence, Lisbon',
       works:  'Supermarket paintings',
-      releases: ''
+      releases: 'Pink Veil'
     };
 
     async function loadNewsFeed() {
@@ -1328,8 +1313,7 @@
       const email       = document.getElementById('commEmail').value.trim();
       const type        = document.getElementById('commType').value;
       const description = document.getElementById('commDescription').value.trim();
-      const budget      = document.getElementById('commBudget').value;
-      const timeline    = document.getElementById('commTimeline').value;
+      const supportType = document.getElementById('commSupport').value;
       const reference   = document.getElementById('commReference').value.trim();
 
       if (!name || !email || !description) {
@@ -1344,7 +1328,7 @@
         const res = await fetch('/api/commission', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, type, description, budget, timeline, reference })
+          body: JSON.stringify({ name, email, type, description, supportType, reference })
         });
 
         const data = await res.json();
