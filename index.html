@@ -468,6 +468,39 @@
     }
 
     /* ═══════════════════════════════════════
+       LANGUAGE TOGGLE
+       ═══════════════════════════════════════ */
+    .title-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.85rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .lang-toggle {
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      background: transparent;
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      padding: 0.15rem 0.6rem;
+      cursor: pointer;
+      transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+      line-height: 1.6;
+    }
+
+    .lang-toggle:hover {
+      color: var(--color-accent);
+      border-color: var(--color-accent);
+      background: rgba(200,168,124,0.06);
+    }
+
+    /* ═══════════════════════════════════════
        RESPONSIVE
        ═══════════════════════════════════════ */
     @media (max-width: 768px) {
@@ -884,10 +917,13 @@
 <body>
 
   <header>
-    <h1 class="gallery-title">Immersive Gallery</h1>
+    <div class="title-row">
+      <h1 class="gallery-title" data-i18n="galleryTitle">Immersive Gallery</h1>
+      <button class="lang-toggle" id="langToggle" data-i18n-toggle="pt">PT</button>
+    </div>
     <p class="gallery-year">2026</p>
     <span class="artist-line">
-      by <a href="https://instagram.com/maria_cabral_painter" target="_blank" rel="noopener noreferrer">Maria Cabral</a> · <a href="https://instagram.com/maria_cabral_painter" target="_blank" rel="noopener noreferrer">@maria_cabral_painter</a>
+      <span data-i18n="artistBy">by</span> <a href="https://instagram.com/maria_cabral_painter" target="_blank" rel="noopener noreferrer">Maria Cabral</a> · <a href="https://instagram.com/maria_cabral_painter" target="_blank" rel="noopener noreferrer">@maria_cabral_painter</a>
     </span>
   </header>
 
@@ -897,28 +933,28 @@
       <div class="news-feed__item" data-feed="events">
         <span class="news-feed__icon">&#9679;</span>
         <div class="news-feed__content">
-          <span class="news-feed__label">Upcoming Events</span>
+          <span class="news-feed__label" data-i18n="newsEvents">Upcoming Events</span>
           <p class="news-feed__text">—</p>
         </div>
       </div>
       <div class="news-feed__item" data-feed="activities">
         <span class="news-feed__icon">&#9679;</span>
         <div class="news-feed__content">
-          <span class="news-feed__label">Current Activities</span>
+          <span class="news-feed__label" data-i18n="newsActivities">Current Activities</span>
           <p class="news-feed__text">—</p>
         </div>
       </div>
       <div class="news-feed__item" data-feed="works">
         <span class="news-feed__icon">&#9679;</span>
         <div class="news-feed__content">
-          <span class="news-feed__label">Current Works</span>
+          <span class="news-feed__label" data-i18n="newsWorks">Current Works</span>
           <p class="news-feed__text">—</p>
         </div>
       </div>
       <div class="news-feed__item" data-feed="releases">
         <span class="news-feed__icon">&#9679;</span>
         <div class="news-feed__content">
-          <span class="news-feed__label">New Releases</span>
+          <span class="news-feed__label" data-i18n="newsReleases">New Releases</span>
           <p class="news-feed__text">—</p>
         </div>
       </div>
@@ -926,8 +962,8 @@
   </section>
 
   <div class="tab-bar">
-    <button class="tab-btn active" data-tab="gallery">Gallery</button>
-    <button class="tab-btn" data-tab="in-progress">In Progress</button>
+    <button class="tab-btn active" data-tab="gallery" data-i18n="tabGallery">Gallery</button>
+    <button class="tab-btn" data-tab="in-progress" data-i18n="tabInProgress">In Progress</button>
   </div>
 
   <div id="tab-gallery" class="tab-content active">
@@ -1034,68 +1070,68 @@
 
   <noscript>
     <div style="padding: 2rem; max-width: 1400px; margin: 0 auto; color: var(--color-text-muted, #8a857d); text-align: center; font-family: 'DM Sans', system-ui, sans-serif;">
-      <p>This gallery requires JavaScript for full interactivity (tab switching, lightbox).</p>
-      <p>The artwork collection is displayed above with static HTML.</p>
+      <p data-i18n="noscript1">This gallery requires JavaScript for full interactivity (tab switching, lightbox).</p>
+      <p data-i18n="noscript2">The artwork collection is displayed above with static HTML.</p>
     </div>
   </noscript>
 
   <!-- ═══ COMMISSION BUTTON ═══ -->
-  <button class="commission-btn" id="commissionBtn" aria-label="Request a commission">
-    <span class="sparkle">✦</span> Request a Commission
+  <button class="commission-btn" id="commissionBtn" aria-label="Request a commission" data-i18n="commBtn">
+    <span class="sparkle">✦</span> <span data-i18n="commBtn">Request a Commission</span>
   </button>
 
   <!-- ═══ COMMISSION MODAL ═══ -->
   <div class="commission-overlay" id="commissionOverlay">
     <div class="commission-modal" role="dialog" aria-label="Commission request form">
       <button class="commission-modal-close" id="commissionClose" aria-label="Close">&times;</button>
-      <h2>Request a Commission</h2>
-      <p class="modal-sub">Tell me what you have in mind and I'll get back to you.</p>
+      <h2 data-i18n="commModalTitle">Request a Commission</h2>
+      <p class="modal-sub" data-i18n="commModalSub">Tell me what you have in mind and I'll get back to you.</p>
 
       <form id="commissionForm" novalidate>
         <div class="form-row">
           <div class="form-group">
-            <label for="commName">Name <span class="required">*</span></label>
+            <label for="commName" data-i18n="commName">Name <span class="required">*</span></label>
             <input type="text" class="form-input" id="commName" name="name" required />
           </div>
           <div class="form-group">
-            <label for="commEmail">Email <span class="required">*</span></label>
+            <label for="commEmail" data-i18n="commEmail">Email <span class="required">*</span></label>
             <input type="email" class="form-input" id="commEmail" name="email" required />
           </div>
         </div>
 
         <div class="form-group">
-          <label for="commType">Commission Type</label>
+          <label for="commType" data-i18n="commType">Commission Type</label>
           <select class="form-select" id="commType" name="type">
             <option value="">Select...</option>
-            <option value="Oil painting">Oil painting</option>
-            <option value="Acrylic painting">Acrylic painting</option>
-            <option value="PLA painting">PLA painting</option>
-            <option value="Collaboration">Collaboration</option>
-            <option value="Other">Other</option>
+            <option value="Oil painting" data-i18n="commOptOil">Oil painting</option>
+            <option value="Acrylic painting" data-i18n="commOptAcrylic">Acrylic painting</option>
+            <option value="PLA painting" data-i18n="commOptPLA">PLA painting</option>
+            <option value="Collaboration" data-i18n="commOptCollab">Collaboration</option>
+            <option value="Other" data-i18n="commOptOther">Other</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label for="commDescription">Description <span class="required">*</span></label>
-          <textarea class="form-textarea" id="commDescription" name="description" required placeholder="Describe what you're looking for — subject, style, size, colours, mood..."></textarea>
+          <label for="commDescription" data-i18n="commDescription">Description <span class="required">*</span></label>
+          <textarea class="form-textarea" id="commDescription" name="description" required placeholder="Describe what you're looking for — subject, style, size, colours, mood..." data-i18n-placeholder="commDescPlaceholder"></textarea>
         </div>
 
         <div class="form-group">
-          <label for="commSupport">Support Type</label>
+          <label for="commSupport" data-i18n="commSupport">Support Type</label>
           <select class="form-select" id="commSupport" name="supportType">
             <option value="">Select...</option>
-            <option value="Paper">Paper</option>
-            <option value="Canvas">Canvas</option>
-            <option value="Other">Other</option>
+            <option value="Paper" data-i18n="commSupportPaper">Paper</option>
+            <option value="Canvas" data-i18n="commSupportCanvas">Canvas</option>
+            <option value="Other" data-i18n="commSupportOther">Other</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label for="commReference">Reference / Links</label>
-          <input type="text" class="form-input" id="commReference" name="reference" placeholder="Instagram, Pinterest, website links, or image URLs" />
+          <label for="commReference" data-i18n="commRef">Reference / Links</label>
+          <input type="text" class="form-input" id="commReference" name="reference" placeholder="Instagram, Pinterest, website links, or image URLs" data-i18n-placeholder="commRefPlaceholder" />
         </div>
 
-        <button type="submit" class="form-submit" id="commSubmit">Send Request</button>
+        <button type="submit" class="form-submit" id="commSubmit" data-i18n="commSend">Send Request</button>
       </form>
     </div>
   </div>
@@ -1105,9 +1141,9 @@
 
   <footer>
     <hr />
-    <p>Maria Cabral — Contemporary Painter &amp; Immersive Artist</p>
-    <p><a href="https://instagram.com/maria_cabral_painter" target="_blank" rel="noopener noreferrer">Instagram</a> &nbsp;/&nbsp; <a href="mailto:mariacabral.painter@gmail.com">Contact</a></p>
-    <p class="visitor-counter"><span class="count" id="visitorCount">—</span> visits</p>
+    <p data-i18n="footerLine">Maria Cabral — Contemporary Painter &amp; Immersive Artist</p>
+    <p><a href="https://instagram.com/maria_cabral_painter" target="_blank" rel="noopener noreferrer">Instagram</a> &nbsp;/&nbsp; <a href="mailto:mariacabral.painter@gmail.com" data-i18n="footerContact">Contact</a></p>
+    <p class="visitor-counter"><span class="count" id="visitorCount">—</span> <span data-i18n="footerVisits">visits</span></p>
   </footer>
 
   <!-- Lightbox -->
@@ -1123,6 +1159,168 @@
   </div>
 
 <script>
+    // ─── i18n Translations ───
+    const TRANSLATIONS = {
+      en: {
+        galleryTitle: 'Immersive Gallery',
+        artistBy: 'by',
+        newsEvents: 'Upcoming Events',
+        newsActivities: 'Current Activities',
+        newsWorks: 'Current Works',
+        newsReleases: 'New Releases',
+        tabGallery: 'Gallery',
+        tabInProgress: 'In Progress',
+        commBtn: '✧ Request a Commission',
+        commModalTitle: 'Request a Commission',
+        commModalSub: "Tell me what you have in mind and I'll get back to you.",
+        commName: 'Name',
+        commEmail: 'Email',
+        commType: 'Commission Type',
+        commDescription: 'Description',
+        commDescPlaceholder: 'Describe what you\'re looking for — subject, style, size, colours, mood...',
+        commSupport: 'Support Type',
+        commOptOil: 'Oil painting',
+        commOptAcrylic: 'Acrylic painting',
+        commOptPLA: 'PLA painting',
+        commOptCollab: 'Collaboration',
+        commOptOther: 'Other',
+        commSupportPaper: 'Paper',
+        commSupportCanvas: 'Canvas',
+        commSupportOther: 'Other',
+        commRef: 'Reference / Links',
+        commRefPlaceholder: 'Instagram, Pinterest, website links, or image URLs',
+        commSend: 'Send Request',
+        feedEvents: 'Collective exhibition — summer 2026',
+        feedActivities: 'Studio residence, Lisbon',
+        feedWorks: 'Supermarket paintings',
+        feedReleases: 'Pink Veil',
+        footerLine: 'Maria Cabral — Contemporary Painter & Immersive Artist',
+        footerContact: 'Contact',
+        footerVisits: 'visits',
+        lightboxUntitled: 'Untitled',
+        lightboxInProgress: 'In progress',
+        lightboxWipAlt: 'Work in progress',
+        toastRequired: 'Please fill in all required fields.',
+        toastSending: 'Sending...',
+        toastSent: 'Request sent! Maria will get back to you soon.',
+        toastError: 'Something went wrong. Please try again.',
+        toastNetwork: 'Network error. Please check your connection and try again.',
+        noscript1: 'This gallery requires JavaScript for full interactivity (tab switching, lightbox).',
+        noscript2: 'The artwork collection is displayed above with static HTML.'
+      },
+      pt: {
+        galleryTitle: 'Galeria Imersiva',
+        artistBy: 'por',
+        newsEvents: 'Próximos Eventos',
+        newsActivities: 'Atividades Atuais',
+        newsWorks: 'Trabalhos em Andamento',
+        newsReleases: 'Novos Lançamentos',
+        tabGallery: 'Galeria',
+        tabInProgress: 'Em Andamento',
+        commBtn: '✧ Solicitar Comissão',
+        commModalTitle: 'Solicitar Comissão',
+        commModalSub: 'Diga-me o que tem em mente e entrarei em contato.',
+        commName: 'Nome',
+        commEmail: 'Email',
+        commType: 'Tipo de Comissão',
+        commDescription: 'Descrição',
+        commDescPlaceholder: 'Descreva o que procura — tema, estilo, tamanho, cores, ambiente...',
+        commSupport: 'Tipo de Suporte',
+        commOptOil: 'Pintura a óleo',
+        commOptAcrylic: 'Pintura acrílica',
+        commOptPLA: 'Pintura PLA',
+        commOptCollab: 'Colaboração',
+        commOptOther: 'Outro',
+        commSupportPaper: 'Papel',
+        commSupportCanvas: 'Tela',
+        commSupportOther: 'Outro',
+        commRef: 'Referência / Links',
+        commRefPlaceholder: 'Instagram, Pinterest, links de sites ou URLs de imagens',
+        commSend: 'Enviar Pedido',
+        feedEvents: 'Exposição coletiva — verão 2026',
+        feedActivities: 'Residência em estúdio, Lisboa',
+        feedWorks: 'Pinturas de supermercado',
+        feedReleases: 'Pink Veil',
+        footerLine: 'Maria Cabral — Pintora Contemporânea & Artista Imersiva',
+        footerContact: 'Contato',
+        footerVisits: 'visitas',
+        lightboxUntitled: 'Sem título',
+        lightboxInProgress: 'Em andamento',
+        lightboxWipAlt: 'Trabalho em andamento',
+        toastRequired: 'Preencha todos os campos obrigatórios.',
+        toastSending: 'Enviando...',
+        toastSent: 'Pedido enviado! Maria entrará em contato em breve.',
+        toastError: 'Algo deu errado. Tente novamente.',
+        toastNetwork: 'Erro de rede. Verifique sua conexão e tente novamente.',
+        noscript1: 'Esta galeria requer JavaScript para interatividade completa (alternar abas, lightbox).',
+        noscript2: 'A coleção de arte é exibida acima com HTML estático.'
+      }
+    };
+
+    let currentLang = localStorage.getItem('galleryLang') || 'en';
+
+    function t(key) {
+      const val = TRANSLATIONS[currentLang]?.[key];
+      return val !== undefined ? val : TRANSLATIONS.en[key] || key;
+    }
+
+    function applyLanguage() {
+      document.documentElement.lang = currentLang;
+
+      // data-i18n elements
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (key && el.tagName !== 'OPTION') {
+          el.textContent = t(key);
+        }
+      });
+
+      // data-i18n on select options
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (key && el.tagName === 'OPTION') {
+          el.textContent = t(key);
+        }
+      });
+
+      // data-i18n-placeholder
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.dataset.i18nPlaceholder;
+        if (key) el.placeholder = t(key);
+      });
+
+      // Lang toggle — show the opposite language
+      const toggle = document.getElementById('langToggle');
+      if (toggle) {
+        const next = currentLang === 'en' ? 'pt' : 'en';
+        toggle.textContent = next.toUpperCase();
+        toggle.dataset.i18nToggle = next;
+      }
+
+      // Update news feed text items
+      const feedKeys = { events: 'feedEvents', activities: 'feedActivities', works: 'feedWorks', releases: 'feedReleases' };
+      document.querySelectorAll('.news-feed__item').forEach(item => {
+        const key = item.dataset.feed;
+        const textEl = item.querySelector('.news-feed__text');
+        if (textEl && feedKeys[key]) {
+          textEl.textContent = t(feedKeys[key]) || '—';
+        }
+      });
+    }
+
+    // ─── Language toggle handler ───
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggle = document.getElementById('langToggle');
+      if (toggle) {
+        toggle.addEventListener('click', () => {
+          currentLang = currentLang === 'en' ? 'pt' : 'en';
+          localStorage.setItem('galleryLang', currentLang);
+          applyLanguage();
+        });
+      }
+      applyLanguage();
+    });
+
     const photos = [
       { date: '2026-03-18', title: 'Pink Veil', material: 'Acrylic on canvas', dimensions: '14 × 14 cm', src: 'art/20260318_134313.jpg' },
       { date: '2026-02-23', title: 'Vulto kitchen II', material: 'Acrylic on canvas', dimensions: '14 x 14 cm', src: 'art/20260223_204805.jpg' },
@@ -1147,7 +1345,7 @@
         card.innerHTML = `
           <div class="painting-wrapper" data-lightbox="${isWip ? 'wip-' + i : i}">
 <div class="painting-image">
-              <img src="${item.src}" alt="${item.title || 'Work in progress'}" loading="lazy" />
+              <img src="${item.src}" alt="${item.title || t('lightboxWipAlt')}" loading="lazy" />
             </div>
           </div>
           ${item.title ? `<div class="painting-info">
@@ -1195,9 +1393,9 @@
       const isWip = idx.startsWith('wip-');
       const photo = isWip ? wipPhotos[parseInt(idx.slice(4))] : photos[parseInt(idx)];
       lbImg.src = photo.src;
-      lbImg.alt = photo.title || 'Work in progress';
-      lbTitle.textContent = photo.title || 'Untitled';
-      lbDate.textContent = photo.date || 'In progress';
+      lbImg.alt = photo.title || t('lightboxWipAlt');
+      lbTitle.textContent = photo.title || t('lightboxUntitled');
+      lbDate.textContent = photo.date || t('lightboxInProgress');
       lbMaterial.textContent = photo.material || '';
       lbDims.textContent = photo.dimensions || '';
       lightbox.classList.add('active');
@@ -1210,9 +1408,9 @@
       const idx = parseInt(wrapper.dataset.lightbox.slice(4));
       const photo = wipPhotos[idx];
       lbImg.src = photo.src;
-      lbImg.alt = 'Work in progress';
-      lbTitle.textContent = 'Untitled';
-      lbDate.textContent = 'In progress';
+      lbImg.alt = t('lightboxWipAlt');
+      lbTitle.textContent = t('lightboxUntitled');
+      lbDate.textContent = t('lightboxInProgress');
       lbMaterial.textContent = '';
       lbDims.textContent = '';
       lightbox.classList.add('active');
@@ -1229,30 +1427,19 @@
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
 
     // ─── News feed ───
-    const DEFAULT_FEED = {
-      events:  'Collective exhibition — summer 2026',
-      activities: 'Studio residence, Lisbon',
-      works:  'Supermarket paintings',
-      releases: 'Pink Veil'
-    };
+    const FEED_KEYS = { events: 'feedEvents', activities: 'feedActivities', works: 'feedWorks', releases: 'feedReleases' };
 
-    async function loadNewsFeed() {
-      try {
-        const res = await fetch('data/news-feed.json');
-        if (!res.ok) throw new Error('Not found');
-        return await res.json();
-      } catch(e) { return DEFAULT_FEED; }
-    }
-
-    function renderNewsFeed(data) {
+    function renderNewsFeed() {
       document.querySelectorAll('.news-feed__item').forEach(item => {
         const key = item.dataset.feed;
         const textEl = item.querySelector('.news-feed__text');
-        if (textEl && data[key] !== undefined) textEl.textContent = data[key] || '—';
+        if (textEl && FEED_KEYS[key]) {
+          textEl.textContent = t(FEED_KEYS[key]) || '—';
+        }
       });
     }
 
-    loadNewsFeed().then(data => renderNewsFeed(data));
+    renderNewsFeed();
 
     // ─── Visitor counter ───
     fetch('https://api.counterapi.dev/v1/mariacabralgallery.com/visitors/up')
@@ -1317,12 +1504,12 @@
       const reference   = document.getElementById('commReference').value.trim();
 
       if (!name || !email || !description) {
-        showToast('Please fill in all required fields.', true);
+        showToast(t('toastRequired'), true);
         return;
       }
 
       commSubmit.disabled = true;
-      commSubmit.textContent = 'Sending...';
+      commSubmit.textContent = t('toastSending');
 
       try {
         const res = await fetch('/api/commission', {
@@ -1334,17 +1521,17 @@
         const data = await res.json();
 
         if (res.ok && data.ok) {
-          showToast('Request sent! Maria will get back to you soon.');
+          showToast(t('toastSent'));
           closeCommissionModal();
           commForm.reset();
         } else {
-          showToast(data.error || 'Something went wrong. Please try again.', true);
+          showToast(data.error || t('toastError'), true);
         }
       } catch (err) {
-        showToast('Network error. Please check your connection and try again.', true);
+        showToast(t('toastNetwork'), true);
       } finally {
         commSubmit.disabled = false;
-        commSubmit.textContent = 'Send Request';
+        commSubmit.textContent = t('commSend');
       }
     });
   </script>
