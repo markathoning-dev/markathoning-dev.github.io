@@ -977,7 +977,7 @@
         <div class="painting-info">
           <h2 class="painting-title">Pink Veil</h2>
           <span class="painting-date">2026-03-18</span>
-          <span class="painting-material">Acrylic on canvas</span>
+          <span class="painting-material" data-i18n="artMaterial">Acrylic on canvas</span>
           <span class="painting-dimensions">14 × 14 cm</span>
         </div>
       </div>
@@ -990,7 +990,7 @@
         <div class="painting-info">
           <h2 class="painting-title">Vulto kitchen II</h2>
           <span class="painting-date">2026-02-23</span>
-          <span class="painting-material">Acrylic on canvas</span>
+          <span class="painting-material" data-i18n="artMaterial">Acrylic on canvas</span>
           <span class="painting-dimensions">14 x 14 cm</span>
         </div>
       </div>
@@ -1003,7 +1003,7 @@
         <div class="painting-info">
           <h2 class="painting-title">Vulto kitchen I</h2>
           <span class="painting-date">2026-02-08</span>
-          <span class="painting-material">Acrylic on canvas</span>
+          <span class="painting-material" data-i18n="artMaterial">Acrylic on canvas</span>
           <span class="painting-dimensions">14 x 14 cm</span>
         </div>
       </div>
@@ -1016,7 +1016,7 @@
         <div class="painting-info">
           <h2 class="painting-title">Standing at the edge of what's next</h2>
           <span class="painting-date">2026-01-15</span>
-          <span class="painting-material">Acrylic on canvas</span>
+          <span class="painting-material" data-i18n="artMaterial">Acrylic on canvas</span>
           <span class="painting-dimensions">30 x 20 cm</span>
         </div>
       </div>
@@ -1199,6 +1199,7 @@
         footerLine: 'Maria Cabral — Contemporary Painter & Immersive Artist',
         footerContact: 'Contact',
         footerVisits: 'visits',
+        artMaterial: 'Acrylic on canvas',
         lightboxUntitled: 'Untitled',
         lightboxInProgress: 'In progress',
         lightboxWipAlt: 'Work in progress',
@@ -1247,6 +1248,7 @@
         footerLine: 'Maria Cabral — Pintora Contemporânea & Artista Imersiva',
         footerContact: 'Contato',
         footerVisits: 'visitas',
+        artMaterial: 'Acrílico sobre tela',
         lightboxUntitled: 'Sem título',
         lightboxInProgress: 'Em andamento',
         lightboxWipAlt: 'Trabalho em andamento',
@@ -1354,7 +1356,7 @@
           ${item.title ? `<div class="painting-info">
             <h2 class="painting-title">${item.title}</h2>
             <span class="painting-date">${item.date}</span>
-            ${item.material ? `<span class="painting-material">${item.material}</span>` : ''}
+            ${item.material ? '<span class="painting-material" data-i18n="artMaterial">' + t('artMaterial') + '</span>' : ''}
             ${item.dimensions ? `<span class="painting-dimensions">${item.dimensions}</span>` : ''}
           </div>` : ''}
         `;
@@ -1399,7 +1401,7 @@
       lbImg.alt = photo.title || t('lightboxWipAlt');
       lbTitle.textContent = photo.title || t('lightboxUntitled');
       lbDate.textContent = photo.date || t('lightboxInProgress');
-      lbMaterial.textContent = photo.material || '';
+      lbMaterial.textContent = photo.material ? t('artMaterial') : '';
       lbDims.textContent = photo.dimensions || '';
       lightbox.classList.add('active');
       document.body.style.overflow = 'hidden';
@@ -1495,6 +1497,44 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeCommissionModal();
     });
+
+    // ─── Type → Support dependency ───
+    (function() {
+      const typeSelect    = document.getElementById('commType');
+      const supportSelect = document.getElementById('commSupport');
+
+      // Snapshot the original option list (value + data-i18n ref)
+      var allSupportOptions = Array.from(supportSelect.options).map(function(opt) {
+        return { value: opt.value, i18n: opt.dataset.i18n };
+      });
+
+      // Only Oil and PLA are restricted; everything else shows the full list
+      var restrictions = {
+        'Oil painting':     ['Canvas', 'Other'],
+        'PLA painting':     ['PLA', 'Other']
+      };
+
+      typeSelect.addEventListener('change', function() {
+        var allowed = restrictions[typeSelect.value] || null;   // null = all
+        var current = supportSelect.value;
+
+        supportSelect.innerHTML = '';
+
+        allSupportOptions.forEach(function(opt) {
+          if (!allowed || opt.value === '' || allowed.indexOf(opt.value) !== -1) {
+            var el = document.createElement('option');
+            el.value = opt.value;
+            if (opt.i18n) el.setAttribute('data-i18n', opt.i18n);
+            el.textContent = opt.i18n ? t(opt.i18n) : opt.value;
+            supportSelect.appendChild(el);
+          }
+        });
+
+        // Restore previous selection if still valid, otherwise clear
+        var valid = Array.from(supportSelect.options).some(function(o) { return o.value === current; });
+        supportSelect.value = valid ? current : '';
+      });
+    })();
 
     commForm.addEventListener('submit', async (e) => {
       e.preventDefault();
